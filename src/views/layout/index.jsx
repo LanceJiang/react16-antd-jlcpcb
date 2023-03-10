@@ -10,9 +10,9 @@ const Main = (props) => {
   const { tagsView } = props;
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      <Sider />
+      {/*<Sider />*/}
       <Layout>
-        <Header />
+        {/*<Header />*/}
         {tagsView ? <TagsView /> : null}
         <Content />
         <RightPanel />
