@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Popover, Icon, Collapse, Radio, Button, Spin, Input, InputNumber, Switch, Select } from "antd";
+import {Popover, Icon, Collapse, Radio, Button, Spin, Input, InputNumber, Switch, Select, Modal } from "antd";
 import "./index.less";
 
 const TextArea = Input.TextArea
@@ -446,6 +446,10 @@ const Dashboard = () => {
   const [showDetail, setShowDetail] = useState(true);
   const [checked_1, setChecked_1] = useState(false);
   const [checked_2, setChecked_2] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const selectRow = () => {
+    console.error('selectRow todo...')
+  }
   const switchHandler = (key, checked) => {
     console.log(key, checked, 'key, checked');
     const fn = key === 'checked_1' ? setChecked_1 : setChecked_2
@@ -574,7 +578,7 @@ const Dashboard = () => {
               </Select>
             </div>
             {
-              (config.collapses || []).map(item => {
+              (config.collapses || []).map((item, i) => {
                 return <Collapse key={item.header} className="collapse" expandIconPosition="right" defaultActiveKey={item.defaultActiveKey}>
                   <Panel header={item.header} key={item.key}>
                     {
@@ -593,6 +597,20 @@ const Dashboard = () => {
                           </Radio.Group>
                         </div>
                       })
+                    }
+                    {
+                      i === config.collapses.length -1 ? (<div className="main-btn-group">
+                        <label className="label">
+                        <span>
+                          PCB Remark<Icon type="edit" style={{marginLeft: '4px'}} onClick={() => setEdit(!isEdit)}/>
+                        </span>
+                        </label>
+                        <div className="formgroup">
+                          {
+                            isEdit ? <TextArea rows={4}/> : ''
+                          }
+                        </div>
+                      </div>) : ''
                     }
                   </Panel>
                 </Collapse>
@@ -652,10 +670,24 @@ const Dashboard = () => {
               </div>
               <div className="flex-center-between item">
                 <span className="label">PCB</span>
-                <div style={{flex: 1}} className="flex-center-between">
-                  <span><Icon type="check-circle" theme="filled" className="ml8 checked"/> 4-5days</span>
-                  <span>$2.00</span>
-                </div>
+                {/*<div className="item_content">*/}
+                  {/*onChange={this.onChange} value={this.state.value}*/}
+                  <Radio.Group className="item_content">
+                    <Radio className="radio" value={1}>
+                      <div className="ml8 flex-center-between">
+                        <span>6-8days</span>
+                        <span>$2.00</span>
+                      </div>
+                    </Radio>
+                    <Radio className="radio" value={2}>
+                      <div className="ml8 flex-center-between">
+                        <span>3-5days</span>
+                        <span>$1.00</span>
+                      </div>
+                    </Radio>
+                  </Radio.Group>
+                {/*</div>*/}
+
               </div>
               <div className="line"></div>
 
@@ -674,7 +706,7 @@ const Dashboard = () => {
               </div>
               <div className="flex-center-between item">
                 <span className="label">Charge:</span>
-                <span>Choose destination country first</span>
+                <span className="link" onClick={() => setVisible(true)}>Choose destination country first</span>
               </div>
               <div className="flex-center-between item">
                 <span className="label">Weight</span>
@@ -683,6 +715,45 @@ const Dashboard = () => {
             </div>
           </div>
         </Spin>
+        <Modal
+          title={<div style={{display: 'flex', alignItems: 'center'}}>Shipping to: <span style={{background: '#f00', margin: '0 2px', display: 'inline-block', width: '24px', height: '16px' }}>UK</span> United States Of America</div>}
+          visible={visible}
+          onCancel={() => {
+            setVisible(false)
+          }}
+          width={750}
+          footer={null}
+          className="shipping-estimate-modal"
+        >
+          <table className="table">
+            <thead >
+            <tr onClick={selectRow}>
+              <td style={{width: '40px'}}></td>
+              <td style={{width: '258px'}}>Shipping Method</td>
+              <td style={{width: '120px'}}>Costs</td>
+              <td style={{width: '188px'}}>Delivery Time</td>
+              <td width="130">Restriction</td>
+            </tr>
+            </thead>
+            <tbody >
+            {
+              Array.from({length: 10}).map((_, i) => {
+                return  <tr>
+                  <td ><Radio>Radio{i}</Radio></td>
+                  <td >
+                    <div className="w240 nowrap">DHL Express Worldwide {i}</div>
+                  </td>
+                  <td ><span >R$103.03</span></td>
+                  <td ><span >2-4 business days</span></td>
+                  <td >
+                    <div >≤10000kg</div>
+                  </td>
+                </tr>
+              })
+            }
+            </tbody>
+          </table>
+        </Modal>
       </div>
     </div>
   );

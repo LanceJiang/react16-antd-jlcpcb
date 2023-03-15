@@ -87,8 +87,22 @@
     .item {
       line-height: 20px;
       padding-top: 10px;
+      align-items: flex-start;
       .label {
         font-size: 14px;
+      }
+      &_content {
+        flex: 1;
+        .radio {
+          display: flex;
+          align-items: center;
+          margin-right: 0;
+          margin-left: 8px;
+        }
+        span.ant-radio + * {
+          padding-right: 0;
+          flex: 1;
+        }
       }
     }
     .total {
@@ -304,7 +318,37 @@
 .ml8 {
   margin-left: 8px;
 }
-.checked {
+.link {
   color: #2b8ced;
-  margin-right: 4px;
+  cursor: pointer;
+}
+
+.shipping-estimate-modal {
+  border: none;
+  vertical-align: middle;
+  .ant-modal-body {
+    padding: 0;
+  }
+  thead {
+    background: #f7faff;
+    font-weight: 600
+  }
+
+  .table {
+    font-size: 14px;
+    color: #222;
+    &>tbody>tr>td,
+    &>thead>tr>td {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      border: none
+    }
+    &>tbody>tr>td:first-child {
+      padding-left: 20px;
+      padding-right: 20px
+    }
+    &>tbody>tr:nth-child(2n) {
+      background: #f7faff
+    }
+  }
 }
